@@ -1,7 +1,7 @@
 import numpy as np
 
 
-def one_dim_peak_finding(array):
+def peakFinding1D(array):
     """
     finds a local maxima in a list if it exist
     """
@@ -16,16 +16,16 @@ def one_dim_peak_finding(array):
         return None
 
     if array[half_n] > array[half_n+1]:
-        return one_dim_peak_finding(array[: half_n+1])
+        return peakFinding1D(array[: half_n+1])
     
     elif array[half_n] < array[half_n+1]:
-        return one_dim_peak_finding(array[half_n+1 :])
+        return peakFinding1D(array[half_n+1 :])
 
     else:
         return array[n//2]
 
 
-def two_dim_peak_finding(numpy_matrix):
+def peakFinding2D(numpy_matrix):
     '''
     finds a local maxima in a matrix if it exist
     '''
@@ -43,22 +43,22 @@ def two_dim_peak_finding(numpy_matrix):
     maximum = array[arg, half_m]
 
     if m==1 or n==1:
-        '''feeds last column to one_dim_peak_finding.'''
-        return one_dim_peak_finding(np.squeeze(array).tolist()) 
+        '''feeds last column to peakFinding1D.'''
+        return peakFinding1D(np.squeeze(array).tolist()) 
     
     elif m==2:
         '''
         finds index of last two columns row index == arg and 
-        feeds that column containning it to one_dim_peak_finding
+        feeds that column containning it to peakFinding1D
         '''
         arg2 = np.argmax(array[arg, :], axis=0)
-        return one_dim_peak_finding(np.squeeze(array[:, arg2]).tolist())
+        return peakFinding1D(np.squeeze(array[:, arg2]).tolist())
     
     elif maximum > array[arg, half_m+1]:
-        return two_dim_peak_finding(array[:, : half_m+1])
+        return peakFinding2D(array[:, : half_m+1])
 
     elif maximum < array[arg, half_m+1]:
-        return two_dim_peak_finding(array[:, half_m+1 :])
+        return peakFinding2D(array[:, half_m+1 :])
         
     else:
         return maximum
@@ -67,7 +67,7 @@ def two_dim_peak_finding(numpy_matrix):
 if __name__ == "__main__":
 
     # arr = [2, 3, 2]
-    # print(one_dim_peak_finding(arr))
+    # print(peakFinding1D(arr))
 
     mat = np.array([
         [1, 0, 2],
@@ -76,6 +76,6 @@ if __name__ == "__main__":
         [50, 5, 21]
         ])
 
-    print(two_dim_peak_finding(mat))
+    print(peakFinding2D(mat))
         
     
