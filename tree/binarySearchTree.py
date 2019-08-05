@@ -153,23 +153,23 @@ class BST():
     def getSize(self):
         return Node._getSize(self.root)
     
-    def preOrder(curr_node=bst.root):
+    def preOrder(self, curr_node):
         nodeList = []
         if curr_node:
-            nodeList = nodeList + preOrder(curr_node.left)
+            nodeList = nodeList + self.preOrder(curr_node.left)
             nodeList.insert(0, curr_node.value) 
-            nodeList = nodeList + preOrder(curr_node.right)
+            nodeList = nodeList + self.preOrder(curr_node.right)
         return nodeList
     
-    def postOrder(curr_node=bst.root):
+    def postOrder(self, curr_node):
         nodeList = []
         if curr_node:
-            nodeList = nodeList + postOrder(curr_node.left)
-            nodeList = nodeList + postOrder(curr_node.right)
+            nodeList = nodeList + self.postOrder(curr_node.left)
+            nodeList = nodeList + self.postOrder(curr_node.right)
             nodeList.insert(0, curr_node.value) 
         return nodeList
     
-    def inOrder(self, curr_node=bst.root):
+    def inOrder(self, curr_node):
         nodeList = []
         if curr_node:
             nodeList.insert(0, curr_node.value)
@@ -217,7 +217,7 @@ class BST():
 if __name__ == "__main__":
     
     # l = [-3, 6]
-    l = [1, 5,-1]
+    l = [1, 5,-1, 6, 8, 0, 5]
     bst = BST()
 
     for i in l:
