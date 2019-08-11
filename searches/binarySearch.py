@@ -20,5 +20,5 @@ def binarySearch(arr, element, where=0):
 
 if __name__ == "__main__":
     l = [5, 6, 7, 8, 9]
-    print(binarySearch(l, 6))
+    print(binarySearch(l, 9))
     
