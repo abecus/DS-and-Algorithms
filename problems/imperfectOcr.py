@@ -58,3 +58,50 @@ I = "a@c$b"
 Output:
 False 
 """
+
+
+def ocr(H, I):
+    """
+    creating dp array for checking if prefix of string (original) is true for 
+    given length of prefix output of OCR and building on that till last all prefix
+    or last case
+    """
+    dp = [[False for _ in range(len(I)+1)] for _ in range(len(H)+1)]
+    dp[0][0] = True
+    
+    for i in range(1, len(dp[0])):
+        if I[i-1] == '@':
+            dp[0][i] = True 
+            
+    for i in range(1, len(H)+1):
+        for j in range(1, len(I)+1):
+            
+            if H[i-1] == I[j-1] or I[j-1] == '$':
+                dp[i][j] = dp[i-1][j-1]
+                
+            elif I[j-1] == '@':
+                dp[i][j] = dp[i-1][j] or dp[i][j-1]
+                
+            else:
+                dp[i][j] = False
+                
+    return dp[-1][-1]
+
+if __name__ == "__main__":
+    # H = "acdcb"
+    # I = "a@c$b"       # False
+    
+    # H = "cb"
+    # I = "$a"        # False
+    
+    H = "adceb"
+    I = "@a@b"        # True
+    
+    # H = "aa"
+    # I = "a"     #False
+
+    # H = "aa"
+    # I = "@"     #True 
+    
+    print(ocr(H, I))
+    print(H, I)

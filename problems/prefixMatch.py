@@ -38,3 +38,53 @@ Output
 9      -----> starting location of prefix 'abc'
 -1    -----> prefix 'd' not found, hence -1
 """
+
+import re
+
+def check(s1, s2):
+    if len(s1)<len(s2):
+        return False
+    
+    for i in range(len(s2)):
+        if s2[i]==s1[i]:
+            continue
+        
+        else:
+            return False
+        
+    else:
+      return True
+  
+def prefixMatch(doc, l):
+    """
+    a bouteforce way with time complexity O(|doc|*|l|)
+    
+    itype: doc:str
+    
+    rtype: l: list of str to check
+    """
+    ret = []    
+    doc = doc.split(' ')
+    
+    for tocheck in l:
+        index = 0
+        temp = []
+        f = 0
+        for withStr in doc:
+            if check(withStr.lower(), tocheck.lower()):
+                temp.append(index)
+                f = 1
+                  
+            index+= len(withStr)+1
+            
+        if f==0:
+            temp.append(-1)
+        ret.append(temp)
+                   
+    return ret
+        
+if __name__ == "__main__":
+    doc = "a aa Aaa abca bca"
+    l = ["a","bc","aA","abc","d"]
+    print(prefixMatch(doc, l))
+        
