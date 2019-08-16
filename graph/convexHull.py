@@ -1,8 +1,7 @@
-from functools import reduce, cmp_to_key
+from functools import cmp_to_key
 import matplotlib.pyplot as plt 
 from matplotlib.patches import Polygon 
 import random
-import numpy as np
 
 #________ Graham algorithm for convex hull runtime O(n*ln(n)) space O(|H|) ________________
 
