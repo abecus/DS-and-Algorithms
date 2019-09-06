@@ -30,9 +30,10 @@ def candies(n, arr):
         return i
 
     # for first element doing it only 
-    # for if first element happens to be 
-    # greater than the second element, works also for 
-    # if first it less then second element
+    # if first element happens to be 
+    # greater than the second element, 
+    # also works, if first it less then 
+    # second element
     j = decTill(i) - i + 1 
     s+=j*(j+1)//2
     i+=j
