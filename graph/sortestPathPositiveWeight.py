@@ -5,7 +5,7 @@ from collections import defaultdict
 
 def bellmanFordSortestPath(start, end, graph):
     
-    # initialising
+    # initializing
     bestWeights = defaultdict(lambda: float('inf'))
     queue = deque()
     parentPointers = dict()
