@@ -7,11 +7,11 @@ def topologicalSort(graph):
     def dfs(node):
         if visited.get(node, False):
             return
-        i=1
+        # i=1
         for adjnode in graph[node].keys():
             dfs(adjnode)
-            visited[adjnode] = i
-            i+=1
+            visited[adjnode] = 1
+            # i+=1
             
     for i in graph.keys():
         dfs(i)     
