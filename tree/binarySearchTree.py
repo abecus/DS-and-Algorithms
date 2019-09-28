@@ -42,33 +42,8 @@ class Node():
 
         else:
             return 1
-        
-    def preorder(self):
-        l=[]
-        if self:
-            l = l + [self.value]
-            
-            if self.left:
-                self.left.preorder()
-            
-            if self.right:
-                self.right.preorder()
-        else:
-            return l
-        
-    def postorder(self):
-        # l = []
-        if self:
-            if self.left:
-                self.left.postorder()
-            
-            if self.right:
-                self.right.postorder()
-            
-            print(self.value)
-        # else:
-        #     return l
-        
+
+
 class BST():
 
     def __init__(self):
@@ -153,30 +128,72 @@ class BST():
     def getSize(self):
         return Node._getSize(self.root)
     
-    def preOrder(self, curr_node):
+    def preOrder(self, curr_node=None):
         nodeList = []
-        if curr_node:
-            nodeList = nodeList + self.preOrder(curr_node.left)
-            nodeList.insert(0, curr_node.value) 
-            nodeList = nodeList + self.preOrder(curr_node.right)
+        if curr_node==None:
+            curr_node = self.root
+
+        def helper(curr_node):
+            if curr_node:
+                nodeList.append(curr_node.value)
+                if curr_node.left:
+                    helper(curr_node.left)
+                if curr_node.right:
+                    helper(curr_node.right)
+                
+        helper(curr_node)
         return nodeList
     
-    def postOrder(self, curr_node):
+    def postOrder(self, curr_node=None):
         nodeList = []
-        if curr_node:
-            nodeList = nodeList + self.postOrder(curr_node.left)
-            nodeList = nodeList + self.postOrder(curr_node.right)
-            nodeList.insert(0, curr_node.value) 
+        if curr_node==None:
+            curr_node = self.root
+
+        def helper(curr_node):
+            if curr_node:
+                if curr_node.left:
+                    helper(curr_node.left)
+                if curr_node.right:
+                    helper(curr_node.right)
+                nodeList.append(curr_node.value)
+                
+        helper(curr_node)
         return nodeList
     
-    def inOrder(self, curr_node):
+    def inOrder(self, curr_node=None):
         nodeList = []
-        if curr_node:
-            nodeList.insert(0, curr_node.value)
-            nodeList = nodeList + self.inOrder(curr_node.left)
-            nodeList = nodeList + self.inOrder(curr_node.right)
+        if curr_node==None:
+            curr_node = self.root
+        
+        def helper(curr_node):
+            if curr_node:
+                if curr_node.left:
+                    helper(curr_node.left)
+                nodeList.append(curr_node.value)
+                if curr_node.right:
+                    helper(curr_node.right)
+            
+        helper(curr_node)
         return nodeList
     
+    def levelOrder(self, curr_node=None):
+        nodeList = []
+        if curr_node==None:
+            curr_node = self.root
+        
+        def bfs(root, i=0):
+            if root:
+                try: nodeList[i]
+                except: nodeList.append([])        
+                nodeList[i].append(root.value)
+                if curr_node.left:
+                    bfs(root.left, i+1)
+                if curr_node.right:
+                    bfs(root.right, i+1)
+                  
+        bfs(curr_node)
+        return nodeList
+        
     def __del(self, value):
         #Look for the node with that value
         node = self.__findNode(self.root, value)
@@ -192,13 +209,13 @@ class BST():
             # has only left child
             elif node.left and node.right==None:
                 self.__changeParent(node, node.left)
-            #  has both childrens
+            #  has both children
             else:
                 #Gets the max value of the left branch
                 tmpNode = self.getMax(node.left)
                 #Deletes the tmpNode
                 self.delete(tmpNode.value)
-                #Assigns the value to the node to delete and keesp tree structure
+                #Assigns the value to the node to delete and keeps tree structure
                 node.value = tmpNode.value
     
     def __changeParent(self, node, withNode):
@@ -227,7 +244,12 @@ if __name__ == "__main__":
     # print(bst.find(3), bst.find(7), bst.find(5))
     
     # print(bst.getHeight(bst.root))
-    bst.root.postorder()
+    print(bst.postOrder(bst.root))
+    print(bst.inOrder(bst.root))
+    print(bst.preOrder(bst.root))
+    print(bst.levelOrder(bst.root))
+    
+    
              
         
     
