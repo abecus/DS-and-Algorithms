@@ -11,9 +11,6 @@ def minCost(costMat, m, n):
         if n<0 or m<0:
             return float('inf')
         
-        if m==0 and n==0:
-            return dp[m][n]
-        
         dp[m][n] = costMat[m][n] + min(helper(costMat, m-1, n-1), helper(costMat, m, n-1), helper(costMat, m-1, n))
         return dp[m][n]
     
