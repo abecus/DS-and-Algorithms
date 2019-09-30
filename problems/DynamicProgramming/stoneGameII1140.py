@@ -33,22 +33,22 @@ def stoneGameII(piles):
         for i in range(n-2,-1,-1):
             piles[i] += piles[i+1]
 
-#         @lru_cache(None)
-#         def dp(i,m):
-#             if i + 2*m >= n:
-#                 return piles[i]
-#             return piles[i] - min(dp(i+x,max(m,x)) for x in range(1,2*m+1))
+        @lru_cache(None)
+        def dp(i,m):
+            if i+2*m >= n:
+                return piles[i]
+            return piles[i] - min(dp(i+x,max(m,x)) for x in range(1,2*m+1))
+        # return dp(0, 1)    
         
-        
-        for i in range(n-1,-1,-1):
-            for m in range(n-1,0,-1):
-                # print(i ,m, piles[i])
-                dp[i][m] = piles[i]
-                if i + 2*m < n:
-                    # print('\t', i, m)
-                    # print('\t\t', [dp[i+x][max(m,x)] for x in range(1,2*m+1)])
-                    dp[i][m] -= min(dp[i+x][max(m,x)] for x in range(1,2*m+1))
-        return dp[0][1]
+        # for i in range(n-1,-1,-1):
+        #     for m in range(n-1,0,-1):
+        #         # print(i ,m, piles[i])
+        #         dp[i][m] = piles[i]
+        #         if i + 2*m < n:
+        #             # print('\t', i, m)
+        #             # print('\t\t', [dp[i+x][max(m,x)] for x in range(1,2*m+1)])
+        #             dp[i][m] -= min(dp[i+x][max(m,x)] for x in range(1,2*m+1))
+        # return dp[0][1]
 
 if __name__ == "__main__":
 	piles = [2,7,9,4,4]
