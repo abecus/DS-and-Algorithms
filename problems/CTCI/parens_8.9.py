@@ -1,19 +1,18 @@
 
 def pren(l):
-    d = {}
+    d = set()
     def helper(l, p):
-        if l==0:
-            p = ''.join(p)
+        if l==1:
             if p not in d:
-                d[p]=1
+                d.add(p)
                 print(p)            
-            return ['(', ')']
+            return 
         
-        helper(l-1, ['('] + p + [')'])
-        helper(l-1, ['(', ')'] + p)
-        helper(l-1, p + ['(', ')'])
-        
-    return  helper(l, [])
+        helper(l-1, "("+p+")")
+        helper(l-1, "()"+p)
+        helper(l-1, p+"()")
+
+    return  helper(l, "()")
     
     
 if __name__ == "__main__":

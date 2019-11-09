@@ -43,9 +43,7 @@ def multiply(mat1, mat2):
             for i in range(len(a1)):
                 a1[i] += a2[i]
             return a1
-
         
-
         mat = []
         temp = [0 for _ in range(rows2)]
 
@@ -91,6 +89,6 @@ if __name__ == "__main__":
     ]
 
     # print(mat13)
-    # print(transpose(mat13))
+    print(transpose(mat32))
     # print(multiply(transpose(mat31), mat31))
-    print(dotProduct(mat31, mat31))
+    # print(dotProduct(mat31, mat31))
