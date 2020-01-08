@@ -38,7 +38,7 @@ def convexHull(arr):
         rtype: list of tuples
         """
         arr.remove(lowLeft)
-        arr.sort(key=cmp_to_key(translatedCrossProd))    
+        arr.sort(key=cmp_to_key(translatedCrossProd))
         
         hull = [lowLeft, arr[0], arr[1]]    # first 3 nodes must be their
         n = len(arr)
@@ -49,9 +49,9 @@ def convexHull(arr):
                 """
                 keeps the pivot(origin) at current of hull and find
                 the angle between second last node of hull and node in arr at 
-                ith index w.r.t.. If val > 0 its ccw then remove the cuurrent node from hull
+                ith index w.r.t.. If val > 0 its ccw then remove the current node from hull
                 do same thing on new current node in hull (the last node).
-                after taose all steps append the last node at ith index to hull
+                after those all steps append the last node at ith index to hull
                 it's bit confussing so read https://en.wikipedia.org/wiki/Graham_scan
                 """
                 hull.pop()
@@ -71,7 +71,7 @@ def convexHull(arr):
         # all points
         x = [p[0] for p in arr]
         y = [p[1] for p in arr]
-        ax1.plot(x, y, marker='*', color='b', linestyle='None')
+        ax1.plot(x, y, marker='*', color='r', linestyle='None')
 
         # hull points
         xy = list(zip([p[0] for p in hull], [p[1] for p in hull]))
@@ -86,7 +86,7 @@ def convexHull(arr):
 if __name__ == "__main__":
 
     l = []
-    for _ in range(100):
+    for _ in range(10):
         l.append((random.randint(-100, 100), random.randint(-100, 100)))
         
     convexHull(l)
