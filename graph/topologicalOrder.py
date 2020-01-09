@@ -1,22 +1,54 @@
-from graphExamples import projectsGraph
-from collections import OrderedDict
+from graphExamples import *
 
-def topologicalSort(graph):
-    visited = OrderedDict()
 
-    def dfs(node):
-        if not visited.get(i, 0):
-            for adjnode in graph[node]:
-                dfs(adjnode)
-                visited[adjnode] = 1
+def topologicalSort(G):
+	"""
+	itype: graph
+	rtype: list
+	"""
+	# no check for cycles in the this algorithm
+ 
+	visited = set()
+	order = []
 
-    for i in graph.keys():
-        dfs(i)
+	def dfs(node):
+		for adjNode, _ in G.getAdjcentNodes(node):
+			# call dfs till the leaf node
+			if adjNode not in visited:
+				visited.add(adjNode)
+				dfs(adjNode)
 
-    visited.update({key:1 for key in graph.keys()})
-    return list(visited.keys())
+				# pop up the stack and add the popped nodes to
+				# the visited set and append the node to the order list
+				order.append(adjNode)
+
+	for node in G.nodes:
+		# loop through all the node available in the graph
+		# if not have been visited
+		if node not in visited:
+			dfs(node)
+
+	# extend the nodes which were not been able 
+	# to explore to the end of the order list 
+	return reversed(order+[node for node in G.nodes if node not in visited])
 
 if __name__ == "__main__":
-    print(topologicalSort(projectsGraph))
-            
-        
+	# G = Graph()
+	# G.add("a", ['d'], edgeType=1)
+	# G.add("d", ['h', 'g'], edgeType=1)
+	# G.add("h", ['j', 'i'], edgeType=1)
+	# G.add("g", ['i'], edgeType=1)
+	# G.add("i", ['l'], edgeType=1)
+	# G.add("j", ['i', 'm'], edgeType=1)
+	# G.add("j", ['i', 'm'], edgeType=1)
+	# G.add("c", ['a', 'b'], edgeType=1)
+	# G.add("b", ['d'], edgeType=1)
+	# G.add("e", ['d', 'a', 'f'], edgeType=1)
+	# G.add("f", ['j', 'k'], edgeType=1)
+	# G.add("f", ['j', 'k'], edgeType=1)
+	# G.add("k", ['j'], edgeType=1)
+	# G.description = "A DAG"
+
+	G=g6	# same graph as above
+	# print(G.description)
+	print(*topologicalSort(G))

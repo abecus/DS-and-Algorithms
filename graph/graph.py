@@ -5,12 +5,12 @@ class Graph:
 	def __init__(self, *args, **kwargs):
 		self.graph = {}
 		self.heuristicGraph = {}
-		# self.Nodes = set()
+		self.description = ""
+		self.nodes = set()
 
 	def _insertToGraph(self, fromNode, toNode=None, weight=None, heuristic=0):
-		# self.Nodes.add(fromNode)
-		# if toNode:
-		# 	self.Nodes.add(toNode)
+		self.nodes.add(fromNode)
+		self.nodes.add(toNode)
 
 		if weight!=None:
 			if (not heuristic) and fromNode not in self.graph:
@@ -104,7 +104,7 @@ class Graph:
 		self.add(fromNode, toNodes, heuristics, edgeType=0, heuristic=1)
 
 	def __str__(self):
-		return "\n".join([f"{node}:{edge}" for node, edge in self.graph.items()])
+		return "\n".join([self.description]+[f"{node}:{edge}" for node, edge in self.graph.items()])
 
 
 	def getHeuristic(self, fromNode, toNode):
@@ -122,7 +122,7 @@ class Graph:
 		"""
 		return self.graph.get(fromNode, {}).get(toNode, None)
 
-	def getCost(self, path):
+	def getPathCost(self, path):
 		"""
 		returns the cost of traversing the path
   
@@ -134,7 +134,46 @@ class Graph:
 			cost+=self.getWeight(start, n)
 			start=n
 		return cost
-  
+
+	# @property
+	# def nodes(self):
+	# 	"returns Nodes of graph as iterable"
+	# 	nodes = set()
+	# 	s.add(*[for k, v in self.graph.items() for node in v])
+	# 	s.add(*[for k, v in self.graph.keys()])
+
+	@property
+	def edges(self):
+		"""
+		returns tuple (from-node, to-node, edge-weight) as 
+		iterable edge weight: None if weight are not given
+		"""
+		for root, nodes in self.graph.items():
+			if type(nodes)==set:
+				for node in nodes:
+					yield root, node, None
+			else:
+				for node, weight in nodes.items():
+					yield root, node, weight
+
+	def getAdjcentNodes(self, node):
+		"""
+		returns tuple (to-node, edge-weight) as 
+		iterable edge weight: None if weight are not given
+		"""
+		adjNodes = self.graph.get(node, [])
+		if type(adjNodes)==set:
+			for n in adjNodes:
+				yield n, None
+
+		elif type(adjNodes)==dict:
+			for node, weight in adjNodes.items():
+				yield node, weight
+
+	def isEdgeBetweenNodes(self, parentNode, node):
+		'return boolean, if edge between "parentNode" and "node"'
+		return parentNode in self.graph and node in self.graph[parentNode]
+
 if __name__ == "__main__":
 	# g1 = Graph()
 
@@ -188,7 +227,7 @@ if __name__ == "__main__":
 	g5.addFromDict("b", {"c":4}, edgeType=1)
 	g5.addFromDict("d", {"g":5}, edgeType=1)
 	g5.addFromDict("c", {"e":6}, edgeType=1)
-	print(g5)
+	# print(g5)
 	
 	g5.addHeuristicFromDict("s", {"g": 10.5})
 	g5.addHeuristicFromDict("a", {"g": 7.5})
@@ -198,7 +237,4 @@ if __name__ == "__main__":
 	g5.addHeuristicFromDict("e", {"g": 5})
 	g5.addHeuristicFromDict("d", {"g": 5})
 	
-	for key, val in g5.heuristicGraph.items():
-		print(key, val)
-   
 	# print(g5.getWeight("s", "g"))
