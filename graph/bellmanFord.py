@@ -10,7 +10,7 @@ def belmanFord(G, startingNode):
 
 	rtype: parentsDict(dict), nodeCosts(dict), nNodes(int)
 	"""
-	nNodes = len(G.nodes)
+	nNodes = len(list(G.nodes))
 
 	# to reconstruct the path to the end node from starting Node
 	parents = {}

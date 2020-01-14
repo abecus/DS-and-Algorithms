@@ -1,150 +1,70 @@
+import math
 
-class Heap():
-    
-    sortedHeap = []
 
-    def __init__(self, heap, heapType='max'):
-        """
-        type heap: a list for complete binary tree
+def heapify(arr: list, *, i: int=None) -> None:
 
-        type heapType: max or min for heap type
-        """
-        self.heap = heap
-        self.heapType = heapType
+	def helper(i):
+		# goes from parent to the child (down)
+		"""
+		comparing children and spawing parent to min of children if exist,
+		and doing same on swapped parent node
+		"""
+		while i<nTillLastRow:
+			ch1 = 2*i +1
 
-    def heapify(self, i):
-        """
-        Itype: index to the node (0 based)
+			try:
+				if arr[ch1]>arr[ch1+1]:	ch1 += 1
+			except:	pass
 
-        node = i
+			if arr[ch1]<arr[i]:
+				arr[i], arr[ch1] = arr[ch1], arr[i]
+				i=ch1
+				continue
+			break
 
-        leftChild = 2*i
+	nTillLastRow = len(arr)//2
 
-        rightChild = 2*i+1
+	if i!=None:
+		helper(i)
+		return
 
-        parent = i//2
-        """
-        if self.heapType == "max":
-            while i<len(self.heap)//2:
-                """
-                comparing childs and spawing max to its parent if it exist,
-                and doing same on swaped child node (now were parent (opposing nature) is)
-                else, return
-                """
-                try:      
-                    if self.heap[(i+1)*2-1]>self.heap[(i+1)*2] and self.heap[(i+1)*2-1]>self.heap[i]:
-                        self.heap[i], self.heap[(i+1)*2-1] = self.heap[(i+1)*2-1], self.heap[i]
-                        i = (i+1)*2-1
+	for i in reversed(range(nTillLastRow)):
+		# main  heapify call
+		helper(i)
 
-                    elif self.heap[(i+1)*2-1]<self.heap[(i+1)*2] and self.heap[(i+1)*2]>self.heap[i]:
-                        self.heap[i], self.heap[(i+1)*2] = self.heap[(i+1)*2], self.heap[i]
-                        i = (i+1)*2
+def heapPush(heapArr: list, val: int) -> None:
+	"inserts the given element into the heap Array"
+ 
+	heapArr.append(val)
 
-                    elif self.heap[(i+1)*2-1] == self.heap[(i+1)*2] and self.heap[(i+1)*2-1]>self.heap[i]:
-                        self.heap[i], self.heap[(i+1)*2-1] = self.heap[(i+1)*2-1], self.heap[i]
-                        i = (i+1)*2-1
+	i = len(heapArr)-1
+	while i>0:
+		parent = math.ceil(i/2) -1
+		if heapArr[parent]>heapArr[i]:
+			heapArr[parent], heapArr[i] = heapArr[i], heapArr[parent]
+			i = parent
+			continue
+		break 
 
-                    else:
-                        return
+def heapPop(heapArr: list) -> "listElement":
+	"returns min element from Array (heap)"
+ 
+	heapArr[0], heapArr[-1] = heapArr[-1], heapArr[0]
+	toReturn = heapArr.pop()
+	heapify(heapArr, i=0) # relaxing
+	return toReturn
 
-                except:
-                    if self.heap[(i+1)*2-1]>self.heap[i]:
-                        self.heap[i], self.heap[(i+1)*2-1] = self.heap[(i+1)*2-1], self.heap[i]
-                        i = (i+1)*2-1
 
-                    else:
-                        return
-            
-        else:
-            while i<len(self.heap)//2:
-                """
-                comparing childs and spawing min to its parent if it exist,
-                and doing same on swaped child node (now were parent (opposing nature) is)
-                else, return
-                """
-                try:      
-                    if self.heap[(i+1)*2-1]<self.heap[(i+1)*2] and self.heap[(i+1)*2-1]<self.heap[i]:
-                        self.heap[i], self.heap[(i+1)*2-1] = self.heap[(i+1)*2-1], self.heap[i]
-                        i = (i+1)*2-1
-
-                    elif self.heap[(i+1)*2-1]>self.heap[(i+1)*2] and self.heap[(i+1)*2]<self.heap[i]:
-                        self.heap[i], self.heap[(i+1)*2] = self.heap[(i+1)*2], self.heap[i]
-                        i = (i+1)*2
-
-                    elif self.heap[(i+1)*2-1] == self.heap[(i+1)*2] and self.heap[(i+1)*2-1]<self.heap[i]:
-                        self.heap[i], self.heap[(i+1)*2-1] = self.heap[(i+1)*2-1], self.heap[i]
-                        i = (i+1)*2-1
-
-                    else:
-                        return
-
-                except:
-                    if self.heap[(i+1)*2-1]<self.heap[i]:
-                        self.heap[i], self.heap[(i+1)*2-1] = self.heap[(i+1)*2-1], self.heap[i]
-                        i = (i+1)*2-1
-
-                    else:
-                        return
-                
-    def buildHeap(self):
-        '''
-        Builds heap
-        '''
-        for i in reversed(range(len(self.heap)//2)):
-            self.heapify(i)
-
-    def insert(self, node):
-        """
-        Itype node: comaparable object
-
-        inserts a node in heap 
-        """
-        self.heap.append(node)
-        i = (len(self.heap))//2 - 1
-        while i>0:
-            self.heapify(i)
-            i = i//2
-        self.heapify(0)
-    
-    def delete(self):
-        """
-        rtype: int (root node)
-
-        deletes root node from heap 
-        """
-        root = self.heap[0] 
-        self.sortedHeap.append(root)
-        self.heap[-1], self.heap[0] = self.heap[0], self.heap[-1] 
-        self.heap = self.heap[:-1]
-        self.heapify(0)
-        return root
-
-    def heapSort(self):
-        """
-        rtype: sorted heap in list
-
-        deletes roots and append to the sortedHeap
-        """
-        for _ in range(len(self.heap)):
-            self.delete() 
-        return self.sortedHeap
-
-    
 if __name__ == "__main__":
 
-    h1 = [16, 4, 10, 14, 7, 9, 3, 2, 8, 1, 2, 3]
-    heap = [10, 20, 15, 12, 40, 25, 18, 40]
-    
-    print(h1)
-    a = Heap(h1, 'max')
-    
-    a.buildHeap()
-    print('build', a.heap)
+	temp = [16, 4, 10, 14, 7, 9, 3, 2, 8, 1, 2, 3]
+	# temp = [10, 20, 15, 12, 40, 25, 18, 40]
+	# temp = [9,8,5,6,2,3,4,1]
 
-    a.insert(35)
-    print('inserted', a.heap)
+	heapify(temp)
+	heapPush(temp, 0)
+	print("temp", temp)
+	
+	for _ in range(len(temp)):
+		print(heapPop(temp))
 
-    a.delete()
-    a.delete()
-    print(a.heap)
-    
