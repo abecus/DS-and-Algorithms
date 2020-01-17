@@ -1,6 +1,3 @@
-from math import ceil
-
-
 class IndexedPriorityQueue:
 	def __init__(self, arr):
 		"""arr: (key: val)"""
@@ -20,17 +17,24 @@ class IndexedPriorityQueue:
 
 	@staticmethod
 	def _getParentId(id):
-		return ceil(id/2)-1
+		return max((id-1)//2, 0)
 
-	@staticmethod
-	def _getLeftChildId(id):
-		return 2*id+1
+	def _getMinChildId(self, id):
+		# returns the child with min value if exists else returns -1
+		minChild = -1
+		leftChild = 2*id+1
+		rightChild = min(self.heapSize, leftChild+2)
+		for j in range(leftChild, rightChild):
+			if self.isLess(j, id):
+				minChild = id = j
+		return minChild
 
 	def doesKeyExists(self, key):
-		return key<self.heapSize and self.values[key]!=None
+		return key<self.arrSize and self.values[key]!=None
 
 	def isLess(self, a, b):
 		"returns bool for a<b"
+		if self.inverseMap[a]==-1 or self.inverseMap[b]==-1:	return 0
 		return self.values[self.inverseMap[a]]<self.values[self.inverseMap[b]] 
 
 	def swap(self, i, j):
@@ -44,43 +48,6 @@ class IndexedPriorityQueue:
 		self.positionMap[self.inverseMap[i]] = j
 		self.inverseMap[j], self.inverseMap[i] = self.inverseMap[i], self.inverseMap[j]
 
-	def sink(self, i):
-		# goes from parent to the child (down)
-		"""
-		comparing children and spawing parent to min of children if exist,
-		and doing same on swapped parent node
-		"""
-		while 1:
-			leftChild = self._getLeftChildId(i)
-			if leftChild+1<self.heapSize and self.isLess(leftChild+1, leftChild):	leftChild+=1
-			if leftChild>=self.heapSize or self.isLess(i, leftChild):	break
-			self.swap(leftChild, i)
-			i=leftChild
-
-	def swim(self, i):
-		# does same as sink function but by going bottom to up in heap
-		p = self._getParentId(i)
-		while 0<=p<i:
-			if not self.isLess(i, p):	break
-			self.swap(i, p)
-			i = p
-			p = self._getParentId(i)
-
-	def heapify(self):
-		for i in reversed(range(self.heapSize//2)):
-			self.sink(i)
- 
-	def insert(self, value:object)->None:
-		self.values.append(value)
-		self.positionMap.append(self.heapSize)
-		self.inverseMap.append(self.heapSize)
-		# if self.heapSize>1:
-		self.swim(self.heapSize-1)
-
-		self.heapSize+=1
-		# self.arrSize += 1
-		# self.map[value] = self.arrSize
-
 	def _peekKey(self)->object:
 		"returns min value's key in heap"
 		return self.inverseMap[0]
@@ -88,6 +55,41 @@ class IndexedPriorityQueue:
 	def peek(self)->object:
 		"returns min value in heap"
 		return self.values[self._peekKey()]
+
+	def sink(self, i):
+		# goes from parent to the child (down)
+		"""
+		comparing children and spawing parent to min of children if exist,
+		and doing same on swapped parent node
+		"""
+		child = self._getMinChildId(i)
+		while child!=-1:
+			self.swap(child, i)
+			i=child
+			child = self._getMinChildId(i)
+
+	def swim(self, i):
+		# does same as sink function but by going bottom to up in heap
+		p = self._getParentId(i)
+		while self.isLess(i, p):
+			self.swap(i, p)
+			i = p
+			p = self._getParentId(i)
+
+	def heapify(self):
+		for i in reversed(range(self.heapSize//2)):
+			self.sink(i)
+
+	def push(self, value:object)->None:
+		self.values.append(value)
+		self.positionMap.append(self.arrSize)
+		self.inverseMap.append(self.arrSize)
+		# if self.heapSize>1:
+		self.swim(self.heapSize)
+
+		self.heapSize+=1
+		self.arrSize+=1
+		# self.map[value] = self.arrSize
 
 	def pop(self)->object:
 		"returns min element from Array (heap)"
@@ -102,13 +104,18 @@ class IndexedPriorityQueue:
 		"idx : index of original arr, of which value has to be updated"
 		i = self.positionMap[idx]
 		self.swap(i, self.heapSize-1)
+
+		if self.heapSize==1:
+			self.__init__([])
+			return
+
 		self.heapSize -= 1
 		self.sink(i=i)
 		self.swim(i=i)
 
 		self.values[idx] = None	# put removed values None
 		self.positionMap[idx] = -1
-		self.inverseMap[-1] = -1
+		self.inverseMap.pop()
 
 	def remove(self, idx:int)->None:
 		"idx : index of original arr, of which value has to be updated"
@@ -116,20 +123,25 @@ class IndexedPriorityQueue:
 
 		i = self.positionMap[idx]
 		self.swap(i, self.heapSize-1)
+
+		if self.heapSize==1:
+			self.__init__([])
+			return
+
 		self.heapSize -= 1
 		self.sink(i=i)
 		self.swim(i=i)
 
 		# del self.map[self.values[idx]]
-		self.values[idx] = float('inf')	# put removed values None
+		self.values[idx] = None	# put removed values None
 		self.positionMap[idx] = -1
-		self.inverseMap[-1] = -1
+		self.inverseMap.pop()
 
 	def update(self, idx:int, value:object)->None:
 		"idx : index of original arr, of which value has to be updated"
 		assert self.doesKeyExists(idx), "Key does not exists"
 		i = self.positionMap[idx]
-		self.values[i] = value
+		self.values[idx] = value
 		self.swim(i)
 		self.sink(i)
 
@@ -143,44 +155,22 @@ class IndexedPriorityQueue:
 	def increaseKey(self, idx:int, value:object)->None:
 		"idx : index of original arr, of which value has to be updated"
 		assert self.doesKeyExists(idx), "Key does not exists"
-		if self.values[idx] < value:
+		if self.values[idx]<value:
 			self.values[idx]=value
 			self.sink(self.positionMap[idx])
-
-	def printSorted(self):
-		print([self.values[k] for k in self.inverseMap])
 
 if __name__ == "__main__":
 	# arr = [9,8,5,6,2,3,4,1]
 	# arr = [16, 4, 10, 14, 7, 9, 3, 2, 8, 1, 2, 3]
 	# arr = [10, 20, 15, 12, 40, 25, 18, 40]
-	# arr = [*range(10)][::-1]
-	arr = [3,15,11,17,7,9,2,1,6,5,16,4]
+	arr = [*range(10)][::-1]
+	# arr = [3,15,11,17,7,9,2,1,6,5,16,4]
 	
 	pq = IndexedPriorityQueue(arr)
 	pq.heapify()
-	pq.insert(2)
-	pq.insert(100)
-
-	pq.printSorted()
+	# pq.push(2)
+	# pq.push(-1)
 	
-	print(pq.heapSize-1)
-	pq.update(pq.heapSize-1, 1000)
-	# print(pq.map)
-
-	print(pq.pop())
-	# print(pq.map)
-
-	print(pq.pop())
-	# print(pq.map)
-
-	print(pq.pop())
-	# print(pq.map)
-
-	# pq.printSorted()
-	pq.remove(1)
-
-	print([pq.pop() for _ in range(pq.heapSize)])
-
-
-	
+	# pq.update(pq.arrSize-1, 100)
+	# pq.update(pq.arrSize-2, -1)
+	print([pq.pop() for _ in range(pq.arrSize)])

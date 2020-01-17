@@ -2,6 +2,7 @@ from graphExamples import *
 from topologicalOrder import topologicalSort
 from collections import defaultdict
 import heapq as heap
+from tree.indexedPriorityQueue import IndexedPriorityQueue
 
 
 def dijkstra(G, startingNode):
@@ -13,12 +14,15 @@ def dijkstra(G, startingNode):
 
 	# to reconstruct the path to the end node from starting Node
 	parents = {}
+ 
+	# to keep the keys of nodes in the heap
+	pqKeyMap = {}
 
 	# to keep track of visited nodes
 	visited = set()
  
 	# contains which node to visit first based on cost to the node
-	priorityQueue = []
+	pq = IndexedPriorityQueue([])
 
 	# nodeCosts retains the cost to the nodes from startingNode
 	nodeCosts = defaultdict(lambda: float('inf'))
@@ -27,15 +31,14 @@ def dijkstra(G, startingNode):
 	# and priority queue to the 0 cost of startingNode
 	# also add the starting node to the parents dict for visited tag
 	nodeCosts[startingNode] = 0
-	heap.heappush(priorityQueue, (0, startingNode))
+	pq.push((0, startingNode))
+	pqKeyMap[startingNode] = pq.arrSize-1
 
-	while priorityQueue:
+	# while priorityQueue:
+	while pq.heapSize:
 		# go greedily by always extending the shorter cost nodes first
-		w, node = heap.heappop(priorityQueue)
-
-		if w>nodeCosts[node]:
-			# if node with shorter path is also available continue
-			continue
+		_, node = pq.pop()
+		del pqKeyMap[node]
 
 		visited.add(node)
 
@@ -50,12 +53,17 @@ def dijkstra(G, startingNode):
 				# update new cost if its their from the "node" to "adjNode"
 				parents[adjNode]=node
 				nodeCosts[adjNode]=newCost
-				heap.heappush(priorityQueue, (newCost, adjNode))
+
+				if adjNode in pqKeyMap:
+					pq.update(pqKeyMap[adjNode], (newCost, adjNode))
+				else:
+					pq.push((newCost, adjNode))
+					pqKeyMap[adjNode] = pq.arrSize-1
 
 	return parents, nodeCosts
 
 if __name__ == "__main__":
-	G=g11
+	G=g9
 	# print(G)
 	parentsDict, nodeCosts = dijkstra(G, startingNode=0)
 	print(*nodeCosts.items())
