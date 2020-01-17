@@ -1,6 +1,3 @@
-import math
-
-
 def heapify(arr: list, *, i: int=None) -> None:
 
 	def helper(i):
@@ -39,7 +36,7 @@ def heapPush(heapArr: list, val: int) -> None:
 
 	i = len(heapArr)-1
 	while i>0:
-		parent = math.ceil(i/2) -1
+		parent = i-1 //2
 		if heapArr[parent]>heapArr[i]:
 			heapArr[parent], heapArr[i] = heapArr[i], heapArr[parent]
 			i = parent
@@ -65,6 +62,5 @@ if __name__ == "__main__":
 	heapPush(temp, 0)
 	print("temp", temp)
 	
-	for _ in range(len(temp)):
-		print(heapPop(temp))
+	print([heapPop(temp) for _ in range(len(temp))])
 
