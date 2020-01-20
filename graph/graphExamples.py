@@ -131,3 +131,23 @@ g11.addFromDict(5, {6:5, 8:50, 4:25}, edgeType=1)
 g11.addFromDict(4, {9:100}, edgeType=1)
 g11.description = "a directed graph with negative cycle"
 
+# ____________________________________________________________________
+g12 = Graph()
+g12.add(0, [1], edgeType=1)
+g12.add(1, [2], edgeType=1)
+g12.add(2, [0], edgeType=1)
+g12.add(3, [4,7], edgeType=1)
+g12.add(4, [5], edgeType=1)
+g12.add(5, [0,6], edgeType=1)
+g12.add(6, [2,0,4], edgeType=1)
+g12.add(7, [5,3], edgeType=1)
+g12.description = "a directed graph with cycles"
+
+# ____________________________________________________________________
+g13 = Graph()
+g13.add(0, [1], edgeType=1)
+g13.add(1, [2,3,4], edgeType=1)
+g13.add(2, [0,4], edgeType=1)
+g13.add(3, [5], edgeType=1)
+g13.add(4, [5], edgeType=0)
+g13.description = "a directed graph with cycles"

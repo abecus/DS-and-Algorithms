@@ -1,7 +1,11 @@
 import itertools
-
+from collections import namedtuple
 
 class Graph:
+
+	Edge = namedtuple("Edge", ["node1", "node2", "weight"])
+	AdjcentNode = namedtuple("AdjcentNode", ["node", "weight"])
+
 	def __init__(self, *args, **kwargs):
 		self.graph = {}
 		self.heuristicGraph = {}
@@ -154,12 +158,12 @@ class Graph:
 		for root, nodes in self.graph.items():
 			if type(nodes)==set:
 				for node in nodes:
-					yield root, node, None
+					yield self.Edge(root, node, None)
 			else:
 				for node, weight in nodes.items():
-					yield root, node, weight
+					yield self.Edge(root, node, weight)
 
-	def getAdjcentNodes(self, node: object)-> "generator":
+	def getAdjcentNodes(self, node: object)-> "namedtuple(node, weight)":
 		"""
 		returns tuple (to-node, edge-weight) as 
 		iterable edge weight: None if weight are not given
@@ -167,11 +171,11 @@ class Graph:
 		adjNodes = self.graph.get(node, [])
 		if type(adjNodes)==set:
 			for n in adjNodes:
-				yield n, None
+				yield self.AdjcentNode(n, None)
 
 		elif type(adjNodes)==dict:
 			for node, weight in adjNodes.items():
-				yield node, weight
+				yield self.AdjcentNode(node, weight)
 
 	def isEdgeBetweenNodes(self, parentNode: object, node: object)-> bool:
 		'return boolean, if edge between "parentNode" and "node"'
