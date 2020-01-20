@@ -2,7 +2,8 @@ from graphExamples import *
 
 
 def connectedComponents(G):
-	
+	"takes an undirected graph"
+
 	components={}
 	visited=set()
 
@@ -16,7 +17,7 @@ def connectedComponents(G):
 			for child, _ in G.getAdjcentNodes(node):
 				findComp(child, root)
 	
-	for node in G.getNodes:
+	for node in G.nodes:
 		if node not in visited:
 			components[node]=set()
 			findComp(node, root=node)

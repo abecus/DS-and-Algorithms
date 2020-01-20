@@ -2,7 +2,6 @@ from graphExamples import *
 from collections import defaultdict
 
 
-
 def belmanFord(G, startingNode):
 	"""
 	itype:	G(Graph),	startingNode(a node of graph G)
