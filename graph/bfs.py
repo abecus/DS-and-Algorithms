@@ -22,7 +22,7 @@ def bfs(G, start, end):
 		path = [end]
 		while path[-1] != start:
 			path.append(parent[path[-1]])
-   
+
 		return " --> ".join(map(str, reversed(path)))
 
 	if start in G.graph:
@@ -44,17 +44,16 @@ def bfs(G, start, end):
 			visited.add(node)
 			# add to the visited
 
-			if node in G.graph:
-				for child in G.graph[node]:
-					if not (child in visited or child in dequeSet):
-						# if node not has been visited before and 
-						# can be explored further
+			for child, _ in G.getAdjcentNodes(node):
+				if not (child in visited or child in dequeSet):
+					# if node not has been visited before and 
+					# can be explored further
 
-						parent[child]=node
-						# updating parent dictionary
+					parent[child]=node
+					# updating parent dictionary
 
-						queue.append(child)
-						dequeSet.add(child)
+					queue.append(child)
+					dequeSet.add(child)
 	
 	return f"Path does not exists between the Nodes ({start} to {end})"
 
