@@ -42,16 +42,14 @@ def branchAndbound(G, start, end):
 			visited.add(node)
 			# add to the visited set
 
-			if node in G.graph:
+			for child, length in G.getAdjcentNodes(node):
+				if child not in visited:
+					# if node not has been visited before and 
+					# can be explored further
 
-				for child, length in G.graph[node].items():
-					if child not in visited:
-						# if node not has been visited before and 
-						# can be explored further
-
-						newAccumulatedDist = dist+length
-						updateHeap(newAccumulatedDist, path+[child])
-						# updates the heap with new distance and new path
+					newAccumulatedDist = dist+length
+					updateHeap(newAccumulatedDist, path+[child])
+					# updates the heap with new distance and new path
 
 	return f"Path does not exists between the Nodes ({start} to {end})"
 

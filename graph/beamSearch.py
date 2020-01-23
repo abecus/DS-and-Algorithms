@@ -42,22 +42,20 @@ def beamSearch(G, start, end, distToGoal=100, beam=2):
 			visited.add(node)
 			# add to the visited set
 
-			if node in G.graph:
+			for child, length in G.getAdjcentNodes(node):
+				if child not in visited:
+					# if node not has been visited before and 
+					# can be explored further
 
-				for child, length in G.graph[node].items():
-					if child not in visited:
-						# if node not has been visited before and 
-						# can be explored further
+					if child==end:
+						# halts, if found the end node
+						return path+[child]
 
-						if child==end:
-							# halts, if found the end node
-							return path+[child]
+					newDist = abs(distToGoal-length)
+					updateHeap(newDist, path+[child])
+					# updates the heap with new distance and new path
 
-						newDist = abs(distToGoal-length)
-						updateHeap(newDist, path+[child])
-						# updates the heap with new distance and new path
-
-						# print(f"{node}-{child}, length:{length}, goalDist:{distToGoal}, distToGo:{newDist}, {newPath}")
+					# print(f"{node}-{child}, length:{length}, goalDist:{distToGoal}, distToGo:{newDist}, {newPath}")
 	return f"Path does not exists between the Nodes ({start} to {end})"
 
 if __name__ == "__main__":

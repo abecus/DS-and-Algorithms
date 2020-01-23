@@ -1,6 +1,10 @@
+import heapq as heap
 from graphExamples import *
-from collections import deque
+from collections import namedtuple
 
+
+
+# explore greedily (using the nodes which are closer to goal) in dfs manner.
 def hillClimbing(G, start, end, distToGoal=100):
 	"""
 	G:		graph
@@ -14,45 +18,39 @@ def hillClimbing(G, start, end, distToGoal=100):
 	if start==end:
 		return end
 
-	visited = set()			# node
-	stack = deque()			# doubly linked list used to reduce the item removal complexity
+	Node = namedtuple("Node", ("goalDist", "node"))
+	visited = set()
+
+	def helper(at, path, covered):
+		if at==end:
+			return at
+
+		visited.add(at)
+
+		tempStack = []		# temp heap to keep the at's adjacent nodes
+		for node, length in G.getAdjcentNodes(at):
+			if node in visited:	continue
+			covered += length
+			heap.heappush(tempStack, Node(goalDist=abs(distToGoal-covered), node=node))
+			covered-=length
+
+		while tempStack:
+			minNode=heap.heappop(tempStack)
+
+			if helper(minNode.node, path, minNode.goalDist):
+				path.append(minNode.node)
+				return path
 
 	if start in G.graph:
-		# checks if start in Graph's and it has edge out from it
-		visited.add(start)
-		stack.append((0, [start]))
+		path = helper(start, [], 0)
 
-		while stack:
-			dist, path = min(stack, key=lambda x: abs(distToGoal-x[0]))
-			# find the path closest to the goal then extend the path
+		if path != None:
+			# if path has been found return it
+			return [*reversed(path+[start])]
 
-			node = path[-1]
-			# to explore the outer node
-
-			stack.remove((dist, path))
-			# removes the nodes from stack
-			
-			visited.add(node)
-			# add to the visited set
-
-			if node in G.graph:
-
-				for child, length in G.graph[node].items():
-					if child not in visited:
-						# if node not has been visited before and 
-						# can be explored further
-
-						if child==end:
-							# halts, if found the end-node
-							return path+[child]
-
-						newDist = dist+length
-						stack.append((newDist, path+[child]))
-						# update the stack with new dist and path
-						
 	return f"Path does not exists between the Nodes ({start} to {end})"
 
 if __name__ == "__main__":
 	print(g4)
-	print(' ')
+	# print(' ')
 	print(hillClimbing(g4, "s", "g", distToGoal=11))

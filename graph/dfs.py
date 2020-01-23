@@ -35,9 +35,9 @@ def dfs(G, start, end):
 
 	
 	visited = set()
-	path = []
+
 	if start in G.graph:
-		path = helper(start, path)
+		path = helper(start, [])
 		
 		if path != None:
 			# if path has been found return it
