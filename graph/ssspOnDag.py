@@ -10,7 +10,7 @@ def singleSourceSortestPathOnDag(G, startingNode):
 	rtype: parentsDict(dict), nodeCosts(dict)
 	"""
 	def dfs(node, root):
-		for adjNode, weight in G.getAdjcentNodes(node):
+		for adjNode, weight in G.getAdjacentNodes(node):
 			# loop through all the adjcent-nodes of the graph-node (node)
 
 			newCost = weight + nodeCosts[node]

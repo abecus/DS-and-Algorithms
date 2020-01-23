@@ -42,7 +42,7 @@ def dijkstra(G, startingNode):
 
 		visited.add(node)
 
-		for adjNode, weight in G.getAdjcentNodes(node):
+		for adjNode, weight in G.getAdjacentNodes(node):
 			# loop through all the adjcent nodes
 
 			if adjNode in visited:

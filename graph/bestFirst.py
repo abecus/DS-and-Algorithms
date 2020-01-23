@@ -28,30 +28,25 @@ def bestFirstSearch(G, start, end, distToGoal=100):
 		stack.append((distToGoal, [start]))
 
 		while stack:
-			print(stack)
-			distToGoal, path = heap.heappop(stack)
 			# find the path closest to the goal then extend the path
+			distToGoal, path = heap.heappop(stack)
 
-			node = path[-1]
-			# to explore the outer node
+			node = path[-1]		# to explore the outer node
 			
-			visited.add(node)
-			# add to the visited set
+			visited.add(node)	# add to the visited set
 
-			if node in G.graph:
+			for child, length in G.getAdjacentNodes(node):
+				if child not in visited:
+					# if node not has been visited before and 
+					# can be explored further
 
-				for child, length in G.graph[node].items():
-					if child not in visited:
-						# if node not has been visited before and 
-						# can be explored further
+					if child==end:
+						# halts, if found the end node
+						return path+[child]
 
-						if child==end:
-							# halts, if found the end node
-							return path+[child]
-
-						newDist = abs(distToGoal-length)
-						updateHeap(newDist, path+[child])
-						# updates the heap with new distance and new path
+					# updates the heap with new distance and new path
+					newDist = abs(distToGoal-length)
+					updateHeap(newDist, path+[child])
 
 	return f"Path does not exists between the Nodes ({start} to {end})"
 

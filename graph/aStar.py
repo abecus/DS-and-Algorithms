@@ -18,13 +18,6 @@ def aStar(G, start, end):
 	visited = set()			# node
 	stack = []				# a heap of tuple (length form end of path to start, path(list))
 
- 
-	def getPath():
-		"""
-		returns the top path 
-		"""
-		pass
-		
 	def updateHeap(dist, path):
 		# updates the heap and maintains the length of to the given beam width
 		heap.heappush(stack, (dist, path))
@@ -35,33 +28,27 @@ def aStar(G, start, end):
 		stack.append((G.getHeuristic(start, end), [start]))
 
 		while stack:
-			print(stack)
-			dist, path = heap.heappop(stack)
 			# find the path closest to the goal then extend the path
+			dist, path = heap.heappop(stack)
 
-			node = path[-1]
-			# to explore the outer node
+			node = path[-1]	# to explore the outer node
 
-			if node==end:
-				# halts, if found the end node
+			if node==end:	# halts, if found the end node
 				return path
 
-			visited.add(node)
-			# add to the visited set
+			visited.add(node)	# add to the visited set
 
-			if node in G.graph:
+			for child, length in G.getAdjacentNodes(node):
+				if child not in visited:
+					# if node not has been visited before and 
+					# can be explored further
 
-				for child, length in G.graph[node].items():
-					if child not in visited:
-						# if node not has been visited before and 
-						# can be explored further
+					childAdmHeuristic = G.getHeuristic(child, end) if child!=end else 0
+					nodeAdmHeuristic = G.getHeuristic(node, end)
 
-						childAdmHeuristic = G.getHeuristic(child, end) if child!=end else 0
-						nodeAdmHeuristic = G.getHeuristic(node, end)
-
-						newAccumulatedDist = dist+length-nodeAdmHeuristic+childAdmHeuristic
-						updateHeap(newAccumulatedDist, path+[child])
-						# updates the heap with new distance and new path
+					newAccumulatedDist = dist+length-nodeAdmHeuristic+childAdmHeuristic
+					updateHeap(newAccumulatedDist, path+[child])
+					# updates the heap with new distance and new path
 
 	return f"Path does not exists between the Nodes ({start} to {end})"
 
@@ -78,4 +65,4 @@ if __name__ == "__main__":
 	print(graph)
 	print(' ')
 	path = aStar(graph, "s", "g")
-	print(path, g4.getCost(path))
+	print(path, g4.getPathCost(path))

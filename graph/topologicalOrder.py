@@ -6,13 +6,13 @@ def topologicalSort(G):
 	itype: graph
 	rtype: list
 	"""
-	# no check for cycles in the this algorithm
+	# no check for cycles in this algorithm
  
 	visited = set()
 	order = []
 
 	def dfs(node):
-		for adjNode, _ in G.getAdjcentNodes(node):
+		for adjNode, _ in G.getAdjacentNodes(node):
 			# call dfs till the leaf node
 			if adjNode not in visited:
 				visited.add(adjNode)

@@ -163,7 +163,7 @@ class Graph:
 				for node, weight in nodes.items():
 					yield self.Edge(root, node, weight)
 
-	def getAdjcentNodes(self, node: object)-> "namedtuple(node, weight)":
+	def getAdjacentNodes(self, node: object)-> "namedtuple(node, weight)":
 		"""
 		returns tuple (to-node, edge-weight) as 
 		iterable edge weight: None if weight are not given
