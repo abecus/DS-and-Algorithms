@@ -151,3 +151,16 @@ g13.add(2, [0,4], edgeType=1)
 g13.add(3, [5], edgeType=1)
 g13.add(4, [5], edgeType=0)
 g13.description = "a directed graph with cycles"
+
+# ____________________________________________________________________
+g14 = Graph()
+g14.add(0, [1, 2])
+g14.add(1, [0, 2])
+g14.add(2, [0, 1, 3, 5])
+g14.add(3, [2, 4])
+g14.add(5, [2, 8, 6])
+g14.add(6, [5, 7])
+g14.add(7, [6, 8])
+g14.add(8, [5, 7])
+g14.description = "undirected graph with many cycles and bridges"
+

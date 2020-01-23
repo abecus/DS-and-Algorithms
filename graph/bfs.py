@@ -23,7 +23,8 @@ def bfs(G, start, end):
 		while path[-1] != start:
 			path.append(parent[path[-1]])
 
-		return " --> ".join(map(str, reversed(path)))
+		# return " --> ".join(map(str, reversed(path)))
+		return path[::-1]
 
 	if start in G.graph:
 		# checks if start in Graph's and it has edge out from it
@@ -44,7 +45,7 @@ def bfs(G, start, end):
 			visited.add(node)
 			# add to the visited
 
-			for child, _ in G.getAdjcentNodes(node):
+			for child, _ in G.getAdjacentNodes(node):
 				if not (child in visited or child in dequeSet):
 					# if node not has been visited before and 
 					# can be explored further

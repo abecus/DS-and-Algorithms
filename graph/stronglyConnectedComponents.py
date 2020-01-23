@@ -40,7 +40,7 @@ def scc(G)-> (dict, int):
 		# visited do dfs no that node and on call-back if the adjcent-node
 		# in the stack put the roots low-link value equal min of itself and
 		# adjcent node's low-link value
-		for node, _ in G.getAdjcentNodes(root):
+		for node, _ in G.getAdjacentNodes(root):
 			if idMap[node]==0:
 				i, count = dfs(node, i, stackSet, count)
 			if stackSet.doesContains(node):

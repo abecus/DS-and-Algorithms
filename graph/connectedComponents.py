@@ -14,7 +14,7 @@ def connectedComponents(G):
 			components[root].add(node)
 			visited.add(node)
 
-			for child, _ in G.getAdjcentNodes(node):
+			for child, _ in G.getAdjacentNodes(node):
 				findComp(child, root)
 	
 	for node in G.nodes:

@@ -42,7 +42,7 @@ def beamSearch(G, start, end, distToGoal=100, beam=2):
 			visited.add(node)
 			# add to the visited set
 
-			for child, length in G.getAdjcentNodes(node):
+			for child, length in G.getAdjacentNodes(node):
 				if child not in visited:
 					# if node not has been visited before and 
 					# can be explored further

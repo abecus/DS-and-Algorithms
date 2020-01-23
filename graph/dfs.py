@@ -22,7 +22,7 @@ def dfs(G, start, end):
 		visited.add(node)
 		# add node to visited
 
-		for child, _ in G.getAdjcentNodes(node):
+		for child, _ in G.getAdjacentNodes(node):
 			# looping through all node which are 
 			# connected by edges
 

@@ -28,7 +28,7 @@ def hillClimbing(G, start, end, distToGoal=100):
 		visited.add(at)
 
 		tempStack = []		# temp heap to keep the at's adjacent nodes
-		for node, length in G.getAdjcentNodes(at):
+		for node, length in G.getAdjacentNodes(at):
 			if node in visited:	continue
 			covered += length
 			heap.heappush(tempStack, Node(goalDist=abs(distToGoal-covered), node=node))
