@@ -5,9 +5,8 @@ from collections import defaultdict
 def articulationPoints(G: "graph"):
 	# takes an undirected graph
 
-	def helper(root, at, parent, i, outEdge):
-		if root==parent:	outEdge +=1
-		# outEdge +=1
+	def helper(root, at, parent, i):
+		outEdge=0
 		ids[at]=llVal[at]=i
 		i+=1
 
@@ -17,8 +16,10 @@ def articulationPoints(G: "graph"):
 				continue
 		
 			if ids[node]==0:
+				outEdge+=1
+
 				# if node have not been visited before, explore it
-				i = helper(root=root, at=node, parent=at, i=i, outEdge=outEdge)
+				i = helper(root=root, at=node, parent=at, i=i)
 
 				# updates the low link val of "at" node in call back
 				llVal[at] = min(llVal[node], llVal[at])
@@ -42,8 +43,7 @@ def articulationPoints(G: "graph"):
 	i=1
 	for node in G.nodes:
 		if ids[node]==0:	# if node not been visited
-			outEdge = 0
-			i = helper(root=node, at=node, parent=-1, i=i, outEdge=outEdge)
+			i = helper(root=node, at=node, parent=-1, i=i)
 	return artPoints
 	
 if __name__ == "__main__":

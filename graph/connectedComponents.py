@@ -7,14 +7,14 @@ def connectedComponents(G):
 	components={}
 	visited=set()
 
-	def findComp(node, root):
-		if node not in visited:
-			# if node not visited add to visited
-			# and add it to it's connected components
-			components[root].add(node)
-			visited.add(node)
+	def findComp(node, root):		
+		# if node not visited add to visited
+		# and add it to it's connected components
+		components[root].add(node)
+		visited.add(node)
 
-			for child, _ in G.getAdjacentNodes(node):
+		for child, _ in G.getAdjacentNodes(node):
+			if child not in visited:
 				findComp(child, root)
 	
 	for node in G.nodes:
