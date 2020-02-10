@@ -164,3 +164,10 @@ g14.add(7, [6, 8])
 g14.add(8, [5, 7])
 g14.description = "undirected graph with many cycles and bridges"
 
+# _____________________________________________________________________
+G=Graph()
+G.add(3, [2])
+G.add(2, [0,4])
+G.add(0, [6,5])
+G.add(4, [5,1])
+G.description = "undirected un-weighted simple graph"

@@ -30,7 +30,7 @@ def bucketSort(arr):
                
         lst = []
         for i, j in counter.items():
-            for k in range(j):
+            for _ in range(j):
                 # appending counted values to lst by their frequency
                 lst.append(i)
     

@@ -1,5 +1,5 @@
 def pancakeSort(A):
-    def findMax(i, l, A=A):
+    def findMinIndex(i, l, A=A):
         m = float('inf')
         idx = i
         for j in range(i, l):
@@ -9,11 +9,11 @@ def pancakeSort(A):
         return idx
     
     l = len(A)
-    for i in range(l):
-        idx = findMax(i, l) # find min index from i and furthur on
-        A[idx:] = [*reversed(A[idx:])]
-        A[i:] = [*reversed(A[i:])]
-
+    # for i in range(l):
+    #     idx = findMax(i, l) # find min index from i and furthur on
+    #     A[idx:] = [*reversed(A[idx:])]
+    #     A[i:] = [*reversed(A[i:])]
+    print(findMinIndex(0, len(A)))
     return A
 
 if __name__ == "__main__":
