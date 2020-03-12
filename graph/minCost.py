@@ -1,6 +1,9 @@
 
 
 def minCost(costMat, m, n):
+    """
+    finds the min cost form 0,0 coordinate to the given coordinate
+    """
     dp = [[float('inf') for i in range(len(costMat))] for j in range(len(costMat[0]))]
     dp[0][0] = costMat[0][0]
   
