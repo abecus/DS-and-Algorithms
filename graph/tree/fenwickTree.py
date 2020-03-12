@@ -58,9 +58,13 @@ if __name__ == "__main__":
 	# range query Test________________
 	for i in range(10):
 		# updating values at an index
+		idx=random.randint(0, len(arr)-1)
 		val=random.randint(10,50)
 		arr[i]+=val
 		f.update(i, val)
+	
+		arr[idx]+=val
+		f.update(idx, val)
 
 		# random index st. idx1<idx2<=len(arr)
 		idx1=random.randint(0,len(arr)//2 +1)
