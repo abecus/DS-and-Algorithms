@@ -35,8 +35,6 @@ def maxCoins(nums):
 
 
 
-
-
 if __name__ == "__main__":
 	nums = []
 	print(maxCoins(nums,))
