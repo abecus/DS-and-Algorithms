@@ -13,7 +13,8 @@
 *.userprefs
 
 # ignore an entire directory
-/.vscode/
+**/.vscode
+**/__pycache__
 
 # Build results
 [Dd]ebug/
