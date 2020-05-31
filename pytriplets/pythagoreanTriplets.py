@@ -1,6 +1,5 @@
 from math import ceil, sqrt
 
-
 def EratosthenesSieve(N:int)-> list:
     '''
     Calculating SPF (Smallest Prime Factor)
@@ -32,7 +31,7 @@ def getReducedFactorization(N:int, spf:list)-> int:
     half of all prime's powers (pow(p, ceil(a/2))) and multiplying 
     them together.
     """
-    reduced = 1
+    gamma = 1
     while (N!=1):
         # keep a prime in prev variable
         prev=spf[N]
@@ -43,9 +42,9 @@ def getReducedFactorization(N:int, spf:list)-> int:
             c+=1
             N//=spf[N]
         # multiplies the half ceil of power on primes
-        reduced*=pow(prev, ceil(c/2))
+        gamma*=pow(prev, ceil(c/2))
         prev=spf[N]
-    return reduced
+    return gamma
 
 
 def pythagoreanTriplets(n):
@@ -56,23 +55,24 @@ def pythagoreanTriplets(n):
     # loopinf for every values of 2*b
     for b2 in range(4, (n - int(sqrt((n<<1) -1)))<<1, 2):
         # calculates reduced factor of 2*b
-        val=getReducedFactorization(b2, spf)
+        gamma=getReducedFactorization(b2, spf)
         
         # for findin all triplets from 2*b
-        for i in range(max(int(sqrt(b2)//val), 1), int(sqrt(b2*((b2>>1)-1)))//val+1):
-            i*=val
+        for i in range(1, int(sqrt(b2*((b2>>1)-1)))//gamma+1):
+            i*=gamma
             sqVal = i*i
             q=sqVal//b2
             # if z = q+i+(b2>>1) > n break else print triplet
             if q+i+(b2>>1)>n:
                 break
             else:
-                # x=q+i
-                # print(x, (b2>>1)+i, x+(b2>>1))
-                tripletCount+=1
+                # remove comments in this else block to print Triplets
+                x=q+i
+                print((x, (b2>>1)+i, x+(b2>>1)))
+                # tripletCount+=1
     return tripletCount
 
 
 if __name__ == "__main__":
-    n=1000
+    n=100
     print(pythagoreanTriplets(n))

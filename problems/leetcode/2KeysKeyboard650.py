@@ -25,34 +25,61 @@ The n will be in the range [1, 1000].
  
 """
 
-import math
+
 def minSteps(n):
-	# from functools import lru_cache
-	# @lru_cache(None)
-	# def f(n):
+
+	from functools import lru_cache
+	@lru_cache(None)
+	def f(x,copied):
+		if x>n:
+			return float('inf')
+		if x==n:
+			return 0
+		return min(
+			2+f(x+x, x),
+			1+f(x+copied, copied)
+		)
+
+	# temp = 1+f(1, 1)
+	# print(f.cache_info())
+	return 1+f(1, 1)
+
+# ________________________________________________________
+	# dp=[0]+[float('inf')]*n
+	# for i in range(n+1):
 	# 	temp=float('inf')
-	# 	for i in range(2, n//2 +1):
-	# 		if n%i ==0:
-	# 			temp=min(temp, f(i)+(n//i))
-	# 	return min(temp, n)
-
-	# return f(n)
-
-	dp=[0]+[float('inf')]*n
-	for i in range(n+1):
-		temp=float('inf')
-		for j in range(2, i//2 +1):
-			if i%j ==0:
-				temp=min(temp, dp[j]+(i//j))
-		dp[i]=min(temp, i)
-	return dp[-1]
+	# 	for j in range(2, i//2 +1):
+	# 		if i%j ==0:
+	# 			temp=min(temp, dp[j]+(i//j))
+	# 	dp[i]=min(temp, i)
+	# return dp[-1]
+ 
+# ________________________________________________________
+	# ans=0
+	# d=2
+	# while n>1:
+	# 	while not n%d:
+	# 		n//=d
+	# 		ans+=d
+	# 	d+=1
+	# return ans
 
 
 if __name__ == "__main__":
-	n = 1
+	n = 3
 	print(minSteps(n,))
 
+	# def foo(x):
+	# 	if x<2:
+	# 		if x==1:
+	# 			return 0
+	# 		return float('inf')
+	# 	return min(
+	# 			foo((x>>1))+2,
+	# 			foo((x-(x>>2)))+1
+	# 			)
 
+	# print(foo(n,0))
 """
 similarQuestions::
 		4 Keys Keyboard: Medium
