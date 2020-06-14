@@ -3,22 +3,26 @@ def binarySearch(arr, element, where=0):
     Itype: arr(sorted list), element(comparable object)
     rtype: int
     '''
-    if element:
+    if not arr[0]<=element<=arr[-1]:
+        return -1
+    
+    left=0
+    right=len(arr)
 
-        mid = (len(arr)-1)//2
-        if arr[mid]==element:
-            return mid+where
-        
+    while left<=right:
+        mid = (left + right) // 2
+
+        if arr[mid] < element:
+            left = mid + 1
+
         elif arr[mid] > element:
-            return binarySearch(arr[:mid], element, where)
-        
-        else:
-            return binarySearch(arr[mid+1:], element, where+mid+1)
+            right = mid - 1
 
-    else:
-        return False
+        else:
+            return mid
+    return -1
 
 if __name__ == "__main__":
     l = [5, 6, 7, 8, 9]
-    print(binarySearch(l, 9))
+    print(binarySearch(l, 87.5))
     
