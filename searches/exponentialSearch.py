@@ -6,9 +6,13 @@ def binarySearch(arr, element, where=0):
     if not arr[0]<=element<=arr[-1]:
         return -1
     
-    left=0
-    right=len(arr)
+    i = 1
+    while i<len(arr) and arr[i]<=element:
+        i = i * 2
 
+    left = i // 2
+    right = min(len(arr), i)
+    
     while left<=right:
         mid = (left + right) // 2
 
@@ -23,6 +27,6 @@ def binarySearch(arr, element, where=0):
     return -1
 
 if __name__ == "__main__":
-    l = [5, 6, 7, 8, 9]
-    print(binarySearch(l, 87.5))
+    l = [*range(50)]
+    print(binarySearch(l, 5))
     
