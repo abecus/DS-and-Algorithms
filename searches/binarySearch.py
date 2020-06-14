@@ -1,4 +1,4 @@
-def binarySearch(arr, element, where=0):
+def binarySearch(arr, element):
     '''
     Itype: arr(sorted list), element(comparable object)
     rtype: int
