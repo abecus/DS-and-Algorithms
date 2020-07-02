@@ -53,5 +53,5 @@ def totalNQueens(n):
     # return [ ["."*i + "Q" + "."*(n-i-1) for i in sol] for sol in result]
 
 
-totalNQueens(9)
+totalNQueens(4)
 print(count)

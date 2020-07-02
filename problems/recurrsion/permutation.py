@@ -16,12 +16,16 @@ def unorderedPermutation(arr, r, t=[]):
 def orderPermutation(arr):
     perms = [[]]
     for num in arr:
-        perms = [perm[i:]+[num]+perm[:i] for perm in perms for i in range(len(perm)+1)]
+        res=[]
+        for perm in perms:
+            for i in range(len(perm)+1):
+                res.append( perm[i:]+[num]+perm[:i] )
+            perms=res
     return perms
 
 
 if __name__ == "__main__":
     res = []
-    for i in unorderedPermutation(set([*"abdul"]), 2):
+    for i in orderPermutation(set([*"abd"])):
         res.append([*i])
-    print(res)
+    print(*res, sep='\n')
