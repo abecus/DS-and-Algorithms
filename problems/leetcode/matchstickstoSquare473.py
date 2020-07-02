@@ -33,12 +33,33 @@ The length of the given matchstick array will not exceed 15.
 
 def makesquare(nums):
     s = sum(nums)
-    side = s//4
-    if s<4 or side*4!=s:    
+    sideLength = s//4
+    if s<4 or sideLength*4!=s:
         return False
     
     l = len(nums)
-    count = 4
+
+    from functools import lru_cache
+    @lru_cache(None)
+    def foo(s1=0,s2=0,s3=0,j=0,sideLength=sideLength,l=l):
+        if s1==s2==s3==sideLength:
+            return True
+        for i in range(j,l):
+            s1+=nums[i]
+            if s1<=sideLength and foo(s1,s2,s3,j=i+1):
+                return True
+            s1-=nums[i]
+            
+            s2+=nums[i]
+            if s2<=sideLength and foo(s1,s2,s3,j=i+1):
+                return 1
+            s2-=nums[i]
+            
+            s3+=nums[i]
+            if s3<=sideLength and foo(s1,s2,s3,j=i+1):
+                return 1
+            s3-=nums[i]
+            
     def helper(nums, side, count, l=l, done=0, s=s):
         if done: return True
         if side==0:
@@ -64,13 +85,22 @@ def makesquare(nums):
                 side+=temp
         else:
             return False
-        
-    return helper(nums, side, count)
+
+
+    # return helper(nums, side, count)
+    if foo():
+        return 1
+    return 0
+    
+    
 
 if __name__ == "__main__":
-    nums = [1,1,2,2,2]
-    # nums = [3,3,3,3,4]
-    # nums = [5,5,5,5,4,4,4,4,3,3,3,3]
+    nums = [1,1,2,2,2]  #1
+    nums = [3,3,3,3,4] #0
+    nums = [5,5,5,5,4,4,4,4,3,3,3,3] #1
+    nums = [20,13,19,19,4,15,10,5,5,15,14,11,3,20,11] #1
+    nums = [5969561,8742425,2513572,3352059,9084275,2194427,1017540,2324577,6810719,8936380,7868365,2755770,9954463,9912280,4713511]
+    print(len(nums))
     print(makesquare(nums,))
 
 
