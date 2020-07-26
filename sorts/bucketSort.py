@@ -1,49 +1,47 @@
-import random
+import random, time
+from typing import *
+from heapq import merge
+import quickSort, insertionSort, countingSort
+import math
 
 
-def bucketSort(arr):
-    """
-    only integer values are allowed
-    
-    itype: list
-    rtype: list
-    """
-    counter = {}
-    
-    def helper(arr):
-        min, max = float('inf'), -float('inf')
-            
-        for i in arr:
-            # finding min and max in one go efficiently
-            if i < min:
-                min = i
-            elif i > max:
-                max = i
-        
-        for i in range(min, max+1):
-            # initialising the hashmap
-            counter[i] = 0
-            
-        for i in arr:
-            # counting the values to hashmap
-            counter[i] += 1
-               
-        lst = []
-        for i, j in counter.items():
-            for _ in range(j):
-                # appending counted values to lst by their frequency
-                lst.append(i)
-    
-        return lst
+def first_n_digits(num, n):
+	return num // 10 ** (int(math.log(num, 10)) - n + 1)
 
-    if len(arr)>1:
-        return helper(arr)
-    else:
-        return arr
+def getLastDigit(x):
+	return x%10
 
+def bucketSort(arr: List[int]) -> None:
+	"""
+	only integer values are allowed
+	
+	itype: list
+	rtype: list
+	"""
+	bucket = [[] for _ in range(9)]
+
+	for i in arr:
+		# store each element by their last digit
+		# bucket[getLastDigit(i)].append(i)
+		bucket[first_n_digits(i, 1) - 1].append(i)
+		
+	# for collection in bucket:
+	#     # sort each bucket
+	#     quickSort.quickSort(collection)
+	#     # insertionSort.insertionSort(collection)
+
+	for i in range(len(bucket)):
+		# sort each bucket
+		bucket[i] = countingSort.countingSort(bucket[i])
+
+	# if all numbers have same number of digits there is no need 
+	# for merge method just join the bucket is there order
+
+	# merge the buckets
+	return [*merge(*bucket)]
 
 if __name__ == "__main__":
-        
-    a = [random.randint(0, 1000) for _ in range(100)]
-    print(bucketSort(a))    
-                              
+		
+	a = [random.randint(1, 100) for _ in range(int(10e3))]
+	print(bucketSort(a))    
+							  
