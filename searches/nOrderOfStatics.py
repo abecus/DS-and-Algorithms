@@ -1,8 +1,8 @@
 import random
 
 
-def nOrderOfStatics(arr, n):
-    "returns  n'th smallest element from array, n in [0...length)"
+def nOrderStatics(arr, n):
+    "returns n'th smallest element from array, n in [0...length)"
     
     def helper(left, right):
         
@@ -43,4 +43,4 @@ if __name__ == "__main__":
     random.shuffle(arr)
     # print(arr)
     for i in range(len(arr)):
-        print(nOrderOfStatics(arr, i), end=', ')
+        print(nOrderStatics(arr, i), end=', ')
