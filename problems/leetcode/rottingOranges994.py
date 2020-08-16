@@ -41,17 +41,16 @@ def orangesRotting(grid):
         q=[(i,j) for i in range(r) for j in range(c) if grid[i][j]==2]
         
         res=0
-        temp=[]
         while q:
-            i,j=q.pop()
-            for x,y in get_adj(i,j):
-                if grid[x][y]==1:
-                    grid[x][y]=2
-                    temp.append((x,y))
-            if not q:
-                res+=1
-                q=temp.copy()
-                temp=[]
+
+            temp = []
+            for i,j in q:
+                for x,y in get_adj(i,j):
+                    if grid[x][y]==1:
+                        grid[x][y]=2
+                        temp.append((x,y))
+            res+=1
+            q = temp.copy()
         
         for i in range(r):
             for j in range(c):
@@ -59,12 +58,16 @@ def orangesRotting(grid):
                     return -1
         
         return res-1 if res else res
+
+
                     
 
 if __name__ == "__main__":
 	grid = [[2,1,1],[1,1,0],[0,1,1]]
-	grid = [[2,1,1],[0,1,1],[1,0,1]]
-	grid = [[0,1]]
+	# grid = [[2,1,1],
+            # [0,1,1],
+            # [1,0,1]]
+	# grid = [[0,1]]
  
 	print(orangesRotting(grid,))
 
