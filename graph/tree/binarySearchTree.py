@@ -160,31 +160,34 @@ class BST():
 	def delete(self, value):
 		self.root = self.__del(self.root, value)
 		
-	def getRightMostVal(self, node):
+	@staticmethod
+	def getRightMostVal(node):
 		if not node.right:
 			return node.value
-		return self.getRightMostVal(node.right)
+		return BST.getRightMostVal(node.right)
 	
-	def removeRightMostAndGetLeftNode(self, node):
+	@staticmethod
+	def removeRightMostAndGetLeftNode(node):
 		if not node.right:
 			return node.left
-		node.right = self.removeRightMostAndGetLeftNode(node.right)
+		node.right = BST.removeRightMostAndGetLeftNode(node.right)
 		return node
 
-	def __del(self, t, x):
+	@staticmethod
+	def __del(t, x):
 		if t==None:
 			return None
 			
 		if x > t.value:   
-			t.right = self.__del(t.right, x)
+			t.right = BST.__del(t.right, x)
 			
 		elif x<t.value:   
-			t.left = self.__del(t.left, x)
+			t.left = BST.__del(t.left, x)
 			
 		elif x == t.value:
 			if t.left:
-				t.value = self.getRightMostVal(t.left)
-				t.left = self.removeRightMostAndGetLeftNode(t.left)
+				t.value = BST.getRightMostVal(t.left)
+				t.left = BST.removeRightMostAndGetLeftNode(t.left)
 			else:
 				t = t.right
 
