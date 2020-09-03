@@ -131,7 +131,7 @@ class LinkedList:
 
     def sort(self, *, head : Node = None) -> Node:
         head = head or self.head
-        return LinkedList.__sort(head) if head else None
+        self.head = LinkedList.__sort(head) if head else None
 
     @staticmethod
     def __sort(head):
@@ -165,12 +165,15 @@ class LinkedList:
 
 # %%
 if __name__ == "__main__":
+    import random
     l = LinkedList()
-    l.insert(2)
-    l.insert(2)
-    l.insert(3)
-    l.insert(4)
-    l.insert(10)
+    for _ in range(20):
+        l.insert(random.randint(100,999))
+    # l.insert(2)
+    # l.insert(2)
+    # l.insert(3)
+    # l.insert(4)
+    # l.insert(10)
 
     # print(len(l))
 
@@ -181,8 +184,8 @@ if __name__ == "__main__":
     # print(2 in l)
 
     print(l)
-    
-    print(l.sort())
+    l.sort()
+    print(l)
     # print(l[1].val)
 
     # for i in l:
