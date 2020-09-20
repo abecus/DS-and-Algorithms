@@ -50,62 +50,44 @@ Note:
 1 <= grid.length * grid[0].length <= 20
 """
 
-count = 0
-def uniquePathsIII(grid):
-	tr = [1,0,-1,0]
-	tc = [0,1,0,-1]
 
-	def canGo(r, c):
-		if not(0<=r<l and 0<=c<m) or\
-			grid[r][c]==-1 or grid[r][c]==3 or\
-			grid[r][c]==1 or grid[r][c]==2:
-			return 0
-		return 1
+def uniquePathsIII(M) -> int:
+    R = len(M)
+    C = len(M[0])
 
-	def canReach2(r, c):
-     
-		for i,j in zip(tr,tc):
-			row=r+i
-			col=c+j
-			if (0<=row<l and 0<=col<m) and grid[r+i][c+j]==2:
-				return 1
-		return 0
- 
-	def solve(r,c,zeros):
-		global count
-		if zeros==0 and canReach2(r, c):
-			count+=1
-			return
-		for i,j in zip(tr,tc):
-			row=r+i
-			col=c+j
-			if canGo(row,col):
-				grid[row][col]=3
-				zeros-=1
-				solve(row, col, zeros)
-				grid[row][col]=0
-				zeros+=1
-		return
+    def foo(i, j, z):
+        t = 0
+        for dx, dy in zip((1, 0, -1, 0), (0, 1, 0, -1)):
+            x = i+dx
+            y = j+dy
+            if 0 <= x < R and 0 <= y < C:
+                if M[x][y] == 0:
+                    M[x][y] = 3
+                    t += foo(x, y, z-1)
+                    M[x][y] = 0
+                elif z == 0 and M[x][y] == 2:
+                    t += 1
+        return t
 
-	l=len(grid)
-	m=len(grid[0])
-	nOnes,r,c=0,0,0
-	for i in range(l):
-		for j in range(m):
-			if grid[i][j]==1:
-				r=i;c=j
-			elif grid[i][j]==-1:
-				nOnes+=1
-				
-	zeros = l*m -2-nOnes
-	solve(r, c, zeros)
-	return  count
+    sx = 0
+    sy = 0
+    cz = 0
+    for i in range(R):
+        for j in range(C):
+            if M[i][j] == 1:
+                sx = i
+                sy = j
+            elif M[i][j] == 0:
+                cz += 1
+
+    return foo(sx, sy, cz)
+
 
 if __name__ == "__main__":
-	grid = [[1,0,0,0],[0,0,0,0],[0,0,2,-1]]
-	grid = [[0,1],[2,0]]
-	grid = [[1,0,0,0],[0,0,0,0],[0,0,0,2]]
-	print(uniquePathsIII(grid,))
+    grid = [[1, 0, 0, 0], [0, 0, 0, 0], [0, 0, 2, -1]]
+    # grid = [[0,1],[2,0]]
+    # grid = [[1,0,0,0],[0,0,0,0],[0,0,0,2]]
+    print(uniquePathsIII(grid,))
 
 
 """
