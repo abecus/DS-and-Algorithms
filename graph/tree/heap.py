@@ -25,15 +25,14 @@ def heapPush(heapArr: list, val: int) -> None:
 	"inserts the given element into the heap Array"
  
 	heapArr.append(val)
-
 	i = len(heapArr)-1
-	while i>0:
+	while i > 0:
 		parent = i-1 //2
-		if heapArr[parent]>heapArr[i]:
+		if heapArr[parent] > heapArr[i]:
 			heapArr[parent], heapArr[i] = heapArr[i], heapArr[parent]
 			i = parent
-			continue
-		break 
+		else:		
+			break
 
 def heapPop(heapArr: list) -> "listElement":
 	"returns min element from Array (heap)"
