@@ -1,33 +1,25 @@
 def heapify(arr: list, *, i: int=None) -> None:
 
-	def helper(i):
+	def helper(i, n):
 		# goes from parent to the child (down)
 		"""
 		comparing children and spawing parent to min of children if exist,
 		and doing same on swapped parent node
 		"""
-		while i<nTillLastRow:
-			ch1 = 2*i +1
+		while i < nTillLastRow:
+			ch1 = 2*i + 1
+			if ch1+1 < n and arr[ch1] > arr[ch1+1]:	
+				ch1 += 1
 
-			try:
-				if arr[ch1]>arr[ch1+1]:	ch1 += 1
-			except:	pass
-
-			if arr[ch1]<arr[i]:
+			if arr[ch1] < arr[i]:
 				arr[i], arr[ch1] = arr[ch1], arr[i]
 				i=ch1
-				continue
-			break
+			else:
+				break
 
 	nTillLastRow = len(arr)//2
-
-	if i!=None:
-		helper(i)
-		return
-
-	for i in reversed(range(nTillLastRow)):
-		# main  heapify call
-		helper(i)
+	n = len(arr)
+	helper(i, n) if i!=None else (helper(i, n)  for i in reversed(range(nTillLastRow)))
 
 def heapPush(heapArr: list, val: int) -> None:
 	"inserts the given element into the heap Array"
