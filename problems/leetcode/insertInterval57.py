@@ -23,30 +23,57 @@ NOTE: input types have been changed on April 15, 2019. Please reset to default 
 
 
 import functools, itertools, operator, bisect, array 
+from typing import *
 
 class Solution:
-	def insert(self, intervals, newInterval):
-		if not intervals: return [newInterval]
-		if intervals[0][0]>newInterval[1]:   return [newInterval]+intervals
-		if intervals[-1][1]<newInterval[0]:   return intervals+[newInterval]
+	def insert(self, A: List[List[int]], a: List[int]) -> List[List[int]]:
+		x, y = a
+		if not A:		return [a]
+		if y<A[0][0]:	return [a]+A
+		if x>A[-1][-1]:	return A+[a]
 		
-		start_list = [x[0] for x in intervals]
-		end_list = [x[1] for x in intervals]
-  
-		i = bisect.bisect_left(end_list, newInterval[0])
+		# def bisect_left(x, k):
+		# 	l = 0
+		# 	r = len(A)
+		# 	while l<r:
+		# 		m = (l+r)//2
+		# 		if A[m][k] < x:	l = m + 1
+		# 		else:			r = m
+		# 	return l
+		
+		# def bisect_right(x, k):
+		# 	l = 0
+		# 	r = len(A)
+		# 	while l<r:
+		# 		m = (l+r)//2
+		# 		if A[m][k] > x:	r = m
+		# 		else:			l = m + 1
+		# 	return l
+		
+		l = bisect.bisect_left([j for i,j in A], x)
+		if y < A[l][0]:		
+			return A[:l] + [a] + A[l:]
+		r = bisect.bisect_right([j for i,j in A], y)
+		return A[:l] + [[min(x, A[l][0]), max(y, A[r-1][1])]] + A[r:]
 
-		if newInterval[1] < intervals[i][0]:
-			return intervals[:i] + [newInterval] + intervals[i:]
-  
-		start = min(newInterval[0], intervals[i][0])
-		end = max(newInterval[1], intervals[i][1])
+	def insert(self, A: List[List[int]], a: List[int]) -> List[List[int]]:
+		x,y = a
+		l = []
+		r = []
+		for i in A:
+			if i[1] < x:
+				l.append(i)
+			elif i[0] > y:
+				r.append(i)
+			else:
+				x = min(x, i[0])
+				y = max(y, i[1])
+		return l + [[x,y]] + r
 
-		j = i + bisect.bisect_right(start_list[i:],end)
-  
-		end = max(end, intervals[j-1][1])
-
-		return intervals[:i] + [[start,end]] + intervals[j:]		
-
+	
+		
+		
+			
 
 if __name__ == "__main__":
 	s=Solution()

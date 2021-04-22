@@ -17,9 +17,9 @@ The 3rd permutation in the lexicographically ordered sequence is "213".
 """
 
 
-def factoradic(k, s):
+def factoradic(k, n):
     res = []
-    for i in range(1, s+1):
+    for i in range(1, n+1):
         res.append(k%i)
         k = k//i
     return res
@@ -32,3 +32,6 @@ def permutationSequence(n, k):
         res.append(nums[idx])
         nums = nums[:idx] + nums[idx+1:]
     return "".join(map(str, res))
+
+if __name__ == "__main__":
+    print(permutationSequence(4, 20))

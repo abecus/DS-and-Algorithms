@@ -25,35 +25,39 @@ Output: false
 
 """
 
-import functools, collections
+import functools
+import collections
+
 
 def possibleBipartition(N, dislikes):
-	g=collections.defaultdict(set)
-	for i,j in dislikes:
-		g[i].add(j)
-		g[j].add(i)
- 
-	def foo(i, c):
-		if color[i]==c^1:	return 0
-		if color[i]!=None:	return 1
-		
-		color[i]=c
-		for j in g[i]:
-			if not foo(j,c^1):	return 0
-		return 1
-      
-	color=[None]*(N+1)
-	for i in range(1,N+1):
-		if color[i]!=None:		continue
-		if not foo(i,0):	return 0
-	return 1
-		
+    g = collections.defaultdict(list)
+	
+    for i, j in dislikes:
+        g[i].append(j)
+        g[j].append(i)
+
+    def foo(i, c):
+        if group[i] == c ^ 1:
+            return 0
+
+        if group[i] != None:
+            return 1
+
+        group[i] = c
+
+        return all(foo(adj, c ^ 1) for adj in g[i])
+
+    group = [None]*(N+1)
+    return all(foo(i, 0) for i in range(1, N+1) if group[i] == None)
+
+
 if __name__ == "__main__":
-	# N = 4; dislikes = [[1,2],[1,3],[2,4]]  #1
-	# N = 3; dislikes = [[1,2],[1,3],[2,3]]  #0
-	# N = 5; dislikes = [[1,2],[2,3],[3,4],[4,5],[1,5]]  #0
-	N=10; dislikes=[[1,2],[3,4],[5,6],[6,7],[8,9],[7,8]]  #1
-	print(possibleBipartition(N,dislikes,))
+    # N = 4; dislikes = [[1,2],[1,3],[2,4]]  #1
+    # N = 3; dislikes = [[1,2],[1,3],[2,3]]  #0
+    N = 5
+    dislikes = [[1, 2], [2, 3], [3, 4], [4, 5], [1, 5]]  # 0
+    # N=10; dislikes=[[1,2],[3,4],[5,6],[6,7],[8,9],[7,8]]  #1
+    print(possibleBipartition(N, dislikes,))
 
 
 """

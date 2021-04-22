@@ -171,3 +171,8 @@ G.add(2, [0,4])
 G.add(0, [6,5])
 G.add(4, [5,1])
 G.description = "undirected un-weighted simple graph"
+
+# _____________________________________________________________________
+G15=Graph()
+G15.add(1, [2])
+G15.description = "undirected un-weighted simple graph"

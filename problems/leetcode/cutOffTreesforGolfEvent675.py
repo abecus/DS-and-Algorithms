@@ -39,57 +39,62 @@ Example 3:  Input:
 """
 
 
-import functools, itertools, operator, bisect, array, collections, math
-from typing import * 
+import functools
+import itertools
+import operator
+import bisect
+import array
+import collections
+import math
+from typing import *
+
 
 class Solution:
-		def cutOffTree(self, M: List[List[int]]) -> int:
-				R = len(M)
-				C = len(M[0])
-				
-				def dist(i,j):
-						seen={(i,j)}
-						s = collections.deque([(i,j,0)])
-						mx = math.inf
-						idx = None
-						dist = math.inf
-						
-						while s:
-							i,j,d = s.popleft()
-							
-							if 1 < M[i][j] < mx:
-									mx = M[i][j]
-									idx = (i, j)
-									dist = d
-									
-							for x, y in ((i+1,j),(i,j+1),(i,j-1),(i-1,j)):
-									if 0<=x<R and 0<=y<C and M[x][y] and (x,y) not in seen:
-											seen.add((x,y))
-											s.append((x,y,d+1))
-							
-						return dist, idx
-				
-				at = (0,0)
-				t = 0
-				while 1:
-						d, idx = dist(*at)
-						if idx==None:
-								break
+    def cutOffTree(self, M: List[List[int]]) -> int:
+        R = len(M)
+        C = len(M[0])
 
-						at=idx
-						t+=d
-						M[at[0]][at[1]] = 1
-						# print(at, d, t)
-						
-				return -1 if any(i>1 for row in M for i in row) else (-1 if t==math.inf else t)
-				
+        def dist(i, j):
+            seen = {(i, j)}
+            s = collections.deque([(i, j, 0)])
+            mx = math.inf
+            idx = None
+            dist = math.inf
+
+            while s:
+                i, j, d = s.popleft()
+
+                if 1 < M[i][j] < mx:
+                    mx = M[i][j]
+                    idx = (i, j)
+                    dist = d
+
+                for x, y in ((i+1, j), (i, j+1), (i, j-1), (i-1, j)):
+                    if 0 <= x < R and 0 <= y < C and M[x][y] and (x, y) not in seen:
+                        seen.add((x, y))
+                        s.append((x, y, d+1))
+
+            return dist, idx
+
+        at = (0, 0)
+        t = 0
+        while 1:
+            d, idx = dist(*at)
+            if idx == None:
+                break
+
+            at = idx
+            t += d
+            M[at[0]][at[1]] = 1
+            # print(at, d, t)
+
+        return -1 if any(i > 1 for row in M for i in row) else (-1 if t == math.inf else t)
 
 
 if __name__ == "__main__":
-	s = Solution()
-	a = [  [1,2,3],  [0,0,0],  [7,6,5] ]
-	print(s.cutOffTree(a))
-
+    s = Solution()
+    a = [[1, 2, 3],  [0, 0, 0],  [7, 6, 5]]
+    print(s.cutOffTree(a))
 
 
 """
