@@ -34,7 +34,6 @@ The Tree of this repository is as follow.
 │   ├───leetcode
 │   └───recurrsion
 ├───pytriplets
-├───random
 ├───searches
 └───sorts
 ```
